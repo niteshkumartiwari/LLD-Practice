@@ -1,5 +1,6 @@
 package gojek.cache.eviction;
 
+import gojek.cache.exception.KeyNotFoundException;
 import gojek.cache.model.Bucket;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -19,17 +20,18 @@ public class RecentlyUsedEvictionStrategy<K,V> implements IEvictionStrategy<K,V>
 
         this.queue= new LinkedBlockingDeque<>();
         list.forEach(e-> queue.add(e));
+        this.capacity= capacity;
     }
 
     @Override
-    public V get(Map<K, Bucket<K, V>> map, K key) throws KeyAlreadyExistsException {
+    public V get(Map<K, Bucket<K, V>> map, K key) throws KeyNotFoundException {
         /**
          * s1 : inc usedon, hit
          * s2 : update queue
          */
 
         if(!map.containsKey(key)){
-            throw new KeyAlreadyExistsException(key.toString());
+            throw new KeyNotFoundException(key.toString());
         }
 
         //TODO:  Abstract this as UpdateMeta
@@ -67,7 +69,8 @@ public class RecentlyUsedEvictionStrategy<K,V> implements IEvictionStrategy<K,V>
     }
 
     private void evict(Map<K, Bucket<K, V>> map){
-        Bucket<K,V> bucket= queue.getLast();
+        Bucket<K,V> bucket= queue.removeLast();
+        System.out.println("Evicting key: "+ bucket.getKey());
         map.remove(bucket.getKey());
     }
 }

@@ -16,6 +16,6 @@ public class Driver {
 
         System.out.println(cache.get("key3"));
         cache.put("key6",600);
-        System.out.println(cache.get("key5"));
+        System.out.println(cache.get("key1"));
     }
 }
