@@ -1,0 +1,7 @@
+model\RentalAgency.class
+Driver.class
+service\RentalService.class
+model\Branch.class
+model\Vehicle.class
+model\Booking.class
+service\BranchService.class
