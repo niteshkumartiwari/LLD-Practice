@@ -1,0 +1,9 @@
+spring:
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+server:
+  port: 8000

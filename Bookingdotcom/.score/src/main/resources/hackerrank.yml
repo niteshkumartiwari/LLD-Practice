@@ -1,0 +1,51 @@
+version: 1.0
+configuration:
+  has_webserver: true
+  scoring:
+    command: .hg/score.sh
+    files:
+      - .hg/target/surefire-reports/TEST-com.booking.recruitment.scoring.HotelInventoryTest.xml
+      - .hg/target/surefire-reports/TEST-com.booking.recruitment.scoring.CoverageTest.xml
+      - .hg/target/surefire-reports/TEST-com.booking.recruitment.scoring.SearchTest.xml
+#      - .hg/target/surefire-reports/TEST-com.booking.recruitment.scoring.RatingReportTest.xml
+    test_total_score: 160 #Max points that can be obtained
+    testcase_weights:
+      # The weights must sum up to a total of 1
+      # Scoring guidance:
+      # 1 point = 0.006
+      # 5 points = 0.03125
+      # 10 points = 0.0625
+      # 20 points = 0.125
+      # 30 points = 0.1875
+      # Best practices
+      statusCode404WhenNonExistentHotelRequested: 0.025
+      statusCode404WhenTryingToDeleteNonExistentHotel: 0.025
+      statusCodeSuccessWhenDeletingHotel: 0.025
+      statusCode404WhenSearchingNonExistentCity: 0.025
+      statusCode400WhenSortByInvalid: 0.025
+      wroteAtLeastXNumberOfTests{int}[1]: 0.0625  #Writing 2 tests
+      wroteAtLeastXNumberOfTests{int}[2]: 0.03125
+      wroteAtLeastXNumberOfTests{int}[3]: 0.03125
+      wroteAtLeastXNumberOfTests{int}[4]: 0.125
+      # Functional tests
+      whenHotelRequestedThenCorrectOneIsReturned: 0.125
+      whenRequestingDeletionHotelIsSoftDeleted: 0.125
+      whenRequestingADeletedHotelThen404IsReturned: 0.0625
+      deletedHotelNotPresentWhenRequestingAllHotels: 0.0625
+      whenRequestingHotelsClosestToCityThenExpectRightOrder: 0.125
+      whenRequestingHotelsClosestToCityWithNoHotelsExpectEmptyList: 0.0625
+      whenRequestingHotelsClosestToCityWithLessThan3HotelsThenExpectRightOrder: 0.0625
+#      whenHavingAnEmptyRatingThenIsIgnored: 0.0
+#      whenRequestingBestHotelsThenExpectRightOrder: 0.0
+#      whenHavingDeletedHotelThenItIsIgnoredFromAverageRating: 0.0
+  ide_config:
+    default_open_files:
+      - src/main/java/com/booking/recruitment/hotel/controller/HotelController.java
+      - src/main/java/com/booking/recruitment/hotel/model/Hotel.java
+      - src/main/java/com/booking/recruitment/hotel/service/impl/DefaultHotelService.java
+      - src/main/java/com/booking/recruitment/hotel/repository/HotelRepository.java
+      - src/main/java/com/booking/recruitment/hotel/exception/ElementNotFoundException.java
+    project_menu:
+      run: mvn clean spring-boot:run
+      install: mvn clean install
+      test: mvn clean test

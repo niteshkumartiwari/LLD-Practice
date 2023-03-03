@@ -1,0 +1,5 @@
+com/booking/recruitment/hotel/service/impl/DefaultRatingServiceTest.class
+com/booking/recruitment/hotel/controller/RatingControllerTest.class
+com/booking/recruitment/hotel/fixtures/HotelDataFixtures.class
+com/booking/recruitment/hotel/controller/HotelControllerTest.class
+com/booking/testing/SlowTest.class
